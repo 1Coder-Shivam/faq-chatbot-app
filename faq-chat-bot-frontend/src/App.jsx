@@ -4,6 +4,40 @@ import { Message, MessageType } from './models/message.model'
 import krishnaIcon from './assets/krishna.png'
 import './App.css'
 
+// Predefined questions about Bhagavad Gita
+const predefinedQuestions = [
+  {
+    "question": "What is the Bhagavad Gita?"
+  },
+  {
+    "question": "Who narrated the Bhagavad Gita?"
+  },
+  {
+    "question": "What is the core message of the Bhagavad Gita?"
+  },
+  {
+    "question": "Why did Arjuna refuse to fight in the war?"
+  },
+  {
+    "question": "What is karma according to the Bhagavad Gita?"
+  },
+  {
+    "question": "What is the significance of Krishna in the Gita?"
+  },
+  {
+    "question": "What does the Gita say about life and death?"
+  },
+  {
+    "question": "What is dharma in the context of the Gita?"
+  },
+  {
+    "question": "How many chapters are there in the Bhagavad Gita?"
+  },
+  {
+    "question": "What is the meaning of yoga in the Bhagavad Gita?"
+  }
+];
+
 // Sudarshan Chakra SVG component with spinning animation
 const SudarshanChakra = ({ size = "large" }) => (
   <div className={`chakra-container ${size === "small" ? "chakra-container-small" : ""}`}>
@@ -188,6 +222,8 @@ function App() {
   const [question, setQuestion] = useState('')
   const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [lastFailedQuestion, setLastFailedQuestion] = useState('') // Track the last question that failed
+  const [hasError, setHasError] = useState(false) // Track if there's an error state
   const chatMessagesRef = useRef(null)
 
   // Validate name (3-15 characters)
@@ -217,28 +253,81 @@ function App() {
     }
   }
 
-  const handleQuestionSubmit = async (e) => {
-    e.preventDefault()
-    
-    if (!question.trim()) return
-    
-    const userMessage = Message.createUserMessage(question)
-    setMessages(prev => [...prev, userMessage])
+  // Send a question to the API
+  const sendQuestionToAPI = async (questionText, isRetry = false) => {
     setIsLoading(true)
-    setQuestion('')
+    setHasError(false)
     
     try {
-      const data = await apiService.askQuestion(userName, question)
+      const data = await apiService.askQuestion(userName, questionText)
+      
+      // Add bot response message
       const botMessage = Message.createBotMessage(data.answer || 'Sorry, I could not understand that.')
       setMessages(prev => [...prev, botMessage])
+      
+      setLastFailedQuestion('') // Clear any previous failed question
     } catch (error) {
       console.error('Error:', error)
-      const errorMessage = Message.createBotMessage('Sorry, there was an error processing your request.')
-      setMessages(prev => [...prev, errorMessage])
+      
+      // Set error state and track the failed question
+      setHasError(true)
+      setLastFailedQuestion(questionText)
+      
+      // If this is the first attempt (not a retry), add an error message
+      if (!isRetry) {
+        // Find if the last message is a user message and replace it with an error message
+        const updatedMessages = [...messages];
+        if (updatedMessages.length > 0 && updatedMessages[updatedMessages.length - 1].type === MessageType.USER) {
+          updatedMessages[updatedMessages.length - 1] = {
+            ...updatedMessages[updatedMessages.length - 1],
+            content: updatedMessages[updatedMessages.length - 1].content,
+            error: true
+          };
+          setMessages(updatedMessages);
+        }
+      }
     } finally {
       setIsLoading(false)
     }
   }
+
+  // Handle regenerate response
+  const handleRegenerateResponse = () => {
+    if (lastFailedQuestion) {
+      sendQuestionToAPI(lastFailedQuestion, true)
+    }
+  }
+
+  const handleQuestionSubmit = async (e) => {
+    e.preventDefault()
+    
+    const trimmedQuestion = question.trim()
+    if (!trimmedQuestion || isLoading) return
+    
+    // Add user message
+    const userMessage = Message.createUserMessage(trimmedQuestion)
+    setMessages(prev => [...prev, userMessage])
+    setQuestion('')
+    
+    // Send the question to the API
+    sendQuestionToAPI(trimmedQuestion)
+  }
+
+  // Function to handle clicking a suggestion chip
+  const handleSuggestionClick = (question) => {
+    if (isLoading || hasError) return;
+    
+    // Set the question in the input field
+    setQuestion(question);
+    
+    // Automatically submit the question
+    const userMessage = Message.createUserMessage(question);
+    setMessages(prev => [...prev, userMessage]);
+    setQuestion('');
+    
+    // Send the question to the API
+    sendQuestionToAPI(question);
+  };
 
   return (
     <div className="app">
@@ -290,15 +379,32 @@ function App() {
               {messages.length === 0 ? (
                 <div className="empty-chat-container">
                   <SudarshanChakra />
-                  <p className="empty-chat-message">Ask your first question below</p>
+                  <p className="empty-chat-message">Ask your first question below or try one of these:</p>
+                  
+                  <div className="suggestion-grid">
+                    {predefinedQuestions.slice(0, 6).map((item, index) => (
+                      <button 
+                        key={index} 
+                        className="suggestion-chip"
+                        onClick={() => handleSuggestionClick(item.question)}
+                      >
+                        {item.question}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               ) : (
                 messages.map((msg, index) => (
-                  <div key={index} className={`message ${msg.type === MessageType.USER ? 'user-message' : 'bot-message'}`}>
-                    {msg.type === MessageType.BOT ? (
-                      <FormattedMessage content={msg.content} />
-                    ) : (
+                  <div key={index} className={`message ${msg.type === MessageType.USER ? 'user-message' : 'bot-message'} ${msg.error ? 'error-message' : ''}`}>
+                    {msg.error ? (
+                      <div className="error-content">
+                        <p>{msg.content}</p>
+                        <p className="error-text">Network error. Failed to respond.</p>
+                      </div>
+                    ) : msg.type === MessageType.USER ? (
                       msg.content
+                    ) : (
+                      <FormattedMessage content={msg.content} />
                     )}
                   </div>
                 ))
@@ -312,17 +418,50 @@ function App() {
               )}
             </div>
             
-            <form onSubmit={handleQuestionSubmit} className="input-area">
-              <input
-                type="text"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="Ask Krishna..."
-                maxLength={100}
-                autoFocus
-              />
-              <button type="submit" className="btn btn-primary">Send</button>
-            </form>
+            {hasError ? (
+              <div className="regenerate-container">
+                <button 
+                  className="regenerate-button" 
+                  onClick={handleRegenerateResponse}
+                  disabled={isLoading}
+                >
+                  <svg className="retry-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 4v6h6"></path>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                  </svg>
+                  Regenerate Response
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Suggestion chips above input */}
+                <div className="suggestion-container">
+                  <div className="suggestion-scroll">
+                    {predefinedQuestions.map((item, index) => (
+                      <button 
+                        key={index} 
+                        className="suggestion-chip"
+                        onClick={() => handleSuggestionClick(item.question)}
+                      >
+                        {item.question}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                <form onSubmit={handleQuestionSubmit} className="input-area">
+                  <input
+                    type="text"
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder="Ask Krishna..."
+                    maxLength={100}
+                    autoFocus
+                  />
+                  <button type="submit" className="btn btn-primary" disabled={isLoading}>Send</button>
+                </form>
+              </>
+            )}
           </>
         )}
       </div>

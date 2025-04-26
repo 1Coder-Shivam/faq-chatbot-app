@@ -614,3 +614,78 @@
     height: 120px;
   }
 }
+
+/* Error message styling */
+.error-message-container {
+  width: 100%;
+}
+
+.error-message {
+  background-color: var(--primary-red) !important;
+  color: var(--text-light) !important;
+  padding: 0.75rem 1rem;
+  border-radius: 12px 12px 0 12px;
+  border-left: none;
+}
+
+.error-content {
+  width: 100%;
+}
+
+.error-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+  text-align: right;
+}
+
+/* Regenerate response button styling */
+.regenerate-container {
+  display: flex;
+  padding: 1rem;
+  border-top: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  justify-content: center;
+}
+
+.regenerate-button {
+  background: var(--primary-gold);
+  color: var(--text-dark);
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.regenerate-button:hover {
+  background: var(--secondary-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.regenerate-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.regenerate-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.regenerate-button .retry-icon {
+  margin-right: 0.6rem;
+  animation: spin 1.5s linear infinite;
+}
+
+.regenerate-button:hover .retry-icon {
+  animation-duration: 1s;
+}
