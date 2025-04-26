@@ -11,13 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 public class AskServiceImpl implements AskService {
-private final Logger logger = LoggerFactory.getLogger(AskServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(AskServiceImpl.class);
     private final FaqLoader faqLoader;
     private final OpenAiClient openAiClient;
     private final CacheUtil cacheUtil;
@@ -31,7 +29,6 @@ private final Logger logger = LoggerFactory.getLogger(AskServiceImpl.class);
     @Override
     public AskResponse getAnswer(AskRequest request, String username) throws Exception {
         String userQuestion = request.getQuestion().trim();
-        logger.info("Received question: {}", userQuestion);
 
         // Use a composite key: username::question
         String cacheKey = username + "::" + userQuestion;
@@ -39,25 +36,23 @@ private final Logger logger = LoggerFactory.getLogger(AskServiceImpl.class);
         // Check cache first
         String cachedAnswer = cacheUtil.get(cacheKey);
         if (cachedAnswer != null) {
-            logger.info("Cache hit for user [{}] and question: {}", username, userQuestion);
+            logger.info("Cache hit for user [{}] and question: {} cachedAnswer:{}", username, userQuestion, cachedAnswer);
             return new AskResponse(cachedAnswer);
         }
 
         List<Faq> faqs = faqLoader.getFaqs();
-        String systemPrompt = buildSystemPrompt(faqs,username);
+        String systemPrompt = buildSystemPrompt(faqs, username);
 
         String aiResponse = openAiClient.getAIAnswer(systemPrompt, userQuestion);
 
         // Check if the response is empty or null
-         logger.info("AI Response: {}", aiResponse);
         if (aiResponse == null || aiResponse.isEmpty()) {
             logger.warn("Received empty response from OpenAI API");
             return new AskResponse("Sorry, I couldn't process that request.");
         }
 
         // Log the Q&A
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        logger.info("Q&A Log | [{}] | User: {} | Question: {} | Answer: {}", timestamp, username, userQuestion, aiResponse);
+        logger.info("User: {} | Question: {} | Answer: {}", username, userQuestion, aiResponse);
 
         // Save in cache
         cacheUtil.put(cacheKey, aiResponse);
@@ -65,7 +60,7 @@ private final Logger logger = LoggerFactory.getLogger(AskServiceImpl.class);
         return new AskResponse(aiResponse);
     }
 
-    private String buildSystemPrompt(List<Faq> faqs,String userName) {
+    private String buildSystemPrompt(List<Faq> faqs, String userName) {
         StringBuilder prompt = new StringBuilder();
         prompt.append("You are Lord Krishna, the spiritual guide, speaking directly to the user, who is named ").append(userName).append(".\n");
         prompt.append("The user may ask questions about life, emotions, struggles, or philosophical topics.\n");

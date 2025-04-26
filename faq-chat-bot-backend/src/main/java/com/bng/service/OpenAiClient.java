@@ -45,7 +45,6 @@ public class OpenAiClient {
         requestBody.put("temperature", 0.7);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
-        logger.info("User Prompt: {}",request);
 
         try {
             ResponseEntity<Map> response = restTemplate.postForEntity(apiUrl, request, Map.class);
