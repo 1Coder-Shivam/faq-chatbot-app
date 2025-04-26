@@ -38,6 +38,27 @@ const predefinedQuestions = [
   }
 ];
 
+// Important keywords from predefined questions for matching
+const keywordMap = {
+  'gita': [0, 1, 2, 4, 5, 6, 7, 8, 9],
+  'bhagavad': [0, 1, 2, 4, 9],
+  'krishna': [5],
+  'arjuna': [3],
+  'karma': [4],
+  'dharma': [7],
+  'message': [2],
+  'core': [2],
+  'narrated': [1],
+  'fight': [3],
+  'war': [3],
+  'life': [6],
+  'death': [6],
+  'chapters': [8],
+  'yoga': [9],
+  'significance': [5],
+  'meaning': [9]
+};
+
 // Sudarshan Chakra SVG component with spinning animation
 const SudarshanChakra = ({ size = "large" }) => (
   <div className={`chakra-container ${size === "small" ? "chakra-container-small" : ""}`}>
@@ -224,6 +245,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [lastFailedQuestion, setLastFailedQuestion] = useState('') // Track the last question that failed
   const [hasError, setHasError] = useState(false) // Track if there's an error state
+  const [suggestions, setSuggestions] = useState([]) // Store matching question suggestions
   const chatMessagesRef = useRef(null)
 
   // Validate name (3-15 characters)
@@ -237,6 +259,37 @@ function App() {
       chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight
     }
   }, [messages])
+
+  // Find matching questions based on input
+  useEffect(() => {
+    if (!question.trim() || question.length < 3 || hasError) {
+      setSuggestions([]);
+      return;
+    }
+
+    // Extract keywords from the input
+    const words = question.toLowerCase().split(/\s+/);
+    const matchedIndices = new Set();
+
+    // Check each word against our keyword map
+    words.forEach(word => {
+      if (word.length >= 3) { // Only consider words with at least 3 characters
+        // Check for partial matches in our keywords
+        Object.keys(keywordMap).forEach(keyword => {
+          if (keyword.includes(word) || word.includes(keyword)) {
+            keywordMap[keyword].forEach(index => matchedIndices.add(index));
+          }
+        });
+      }
+    });
+
+    // Get the matching questions
+    const matches = Array.from(matchedIndices)
+      .map(index => predefinedQuestions[index])
+      .slice(0, 3); // Limit to 3 suggestions
+
+    setSuggestions(matches);
+  }, [question, hasError]);
 
   const handleStartChat = () => {
     if (isNameValid) {
@@ -253,10 +306,30 @@ function App() {
     }
   }
 
+  // Function to handle clicking a suggestion chip
+  const handleSuggestionClick = (questionText) => {
+    if (isLoading || hasError) return;
+    
+    // Set the question in the input field
+    setQuestion(questionText);
+    
+    // Automatically submit the question
+    const userMessage = Message.createUserMessage(questionText);
+    setMessages(prev => [...prev, userMessage]);
+    setQuestion('');
+    
+    // Send the question to the API
+    sendQuestionToAPI(questionText);
+    
+    // Clear suggestions
+    setSuggestions([]);
+  };
+
   // Send a question to the API
   const sendQuestionToAPI = async (questionText, isRetry = false) => {
     setIsLoading(true)
     setHasError(false)
+    setSuggestions([]) // Clear suggestions when sending a question
     
     try {
       const data = await apiService.askQuestion(userName, questionText)
@@ -313,22 +386,6 @@ function App() {
     sendQuestionToAPI(trimmedQuestion)
   }
 
-  // Function to handle clicking a suggestion chip
-  const handleSuggestionClick = (question) => {
-    if (isLoading || hasError) return;
-    
-    // Set the question in the input field
-    setQuestion(question);
-    
-    // Automatically submit the question
-    const userMessage = Message.createUserMessage(question);
-    setMessages(prev => [...prev, userMessage]);
-    setQuestion('');
-    
-    // Send the question to the API
-    sendQuestionToAPI(question);
-  };
-
   return (
     <div className="app">
       {/* Navbar */}
@@ -382,7 +439,7 @@ function App() {
                   <p className="empty-chat-message">Ask your first question below or try one of these:</p>
                   
                   <div className="suggestion-grid">
-                    {predefinedQuestions.slice(0, 6).map((item, index) => (
+                    {predefinedQuestions.map((item, index) => (
                       <button 
                         key={index} 
                         className="suggestion-chip"
@@ -434,20 +491,22 @@ function App() {
               </div>
             ) : (
               <>
-                {/* Suggestion chips above input */}
-                <div className="suggestion-container">
-                  <div className="suggestion-scroll">
-                    {predefinedQuestions.map((item, index) => (
-                      <button 
-                        key={index} 
-                        className="suggestion-chip"
-                        onClick={() => handleSuggestionClick(item.question)}
-                      >
-                        {item.question}
-                      </button>
-                    ))}
+                {/* Display matching suggestions */}
+                {suggestions.length > 0 && (
+                  <div className="matching-suggestions">
+                    <div className="suggestions-list">
+                      {suggestions.map((item, index) => (
+                        <button 
+                          key={index} 
+                          className="suggestion-inline"
+                          onClick={() => handleSuggestionClick(item.question)}
+                        >
+                          {item.question}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
                 
                 <form onSubmit={handleQuestionSubmit} className="input-area">
                   <input
