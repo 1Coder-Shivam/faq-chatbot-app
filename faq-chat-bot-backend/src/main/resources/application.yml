@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: faq-chat-bot
+  http:
+    converters:
+      preferred-json-mapper: gson
+
+openai:
+  api:
+    url: https://api.openai.com/v1/chat/completions
+    key: <Your API Key>
+  model: gpt-4o-mini
+
+logging:
+  level:
+    root: INFO
+    com.bng: INFO  # Your package name
+  file:
+    name: logs/qa-log.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
