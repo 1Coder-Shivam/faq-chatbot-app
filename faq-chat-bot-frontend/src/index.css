@@ -8,9 +8,14 @@
   font-family: 'Poppins', sans-serif;
 }
 
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
 body {
   background: linear-gradient(135deg, #f8f4e8 0%, #f0ece0 100%);
-  min-height: 100vh;
   color: #5d4845;
 }
 
@@ -53,7 +58,6 @@ body {
 }
 
 .chat-messages {
-  height: 450px;
   padding: 1.5rem;
   overflow-y: auto;
   background-color: #ffffff;
@@ -213,9 +217,5 @@ body {
     margin: 0;
     border-radius: 0;
     height: 100vh;
-  }
-  
-  .chat-messages {
-    height: calc(100vh - 140px);
   }
 }

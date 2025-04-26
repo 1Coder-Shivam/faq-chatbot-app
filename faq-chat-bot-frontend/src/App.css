@@ -14,6 +14,12 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Prevent page scrolling */
+  position: fixed; /* Fix the position to prevent scrolling */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .logo {
@@ -48,6 +54,11 @@
   text-align: center;
   padding: 3rem 1rem;
   background-color: var(--bg-cream);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .welcome-screen h1 {
@@ -61,6 +72,32 @@
   margin-bottom: 1.5rem;
 }
 
+.welcome-screen .input-area {
+  width: 100%;
+  max-width: 500px;
+  margin: 1.5rem auto 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.welcome-screen input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--primary-gold);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-width: 0; /* Fix for text truncation in flex containers */
+}
+
+.welcome-screen input::placeholder {
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .input-area {
   display: flex;
   gap: 0.5rem;
@@ -69,6 +106,7 @@
 .input-area input {
   flex: 1;
   border-color: var(--primary-gold);
+  min-width: 0; /* Fix for text truncation in flex containers */
 }
 
 .input-area input:focus {
@@ -453,16 +491,21 @@
 
 .chat-container {
   max-width: 800px;
-  margin: 2rem auto;
+  width: 100%; /* Ensure it takes full width on smaller screens */
+  margin: 0 auto; /* Center but don't add top/bottom margin */
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   background-color: white;
   overflow: hidden;
   border: 1px solid rgba(198, 169, 78, 0.2);
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Allow it to expand to fill available space */
 }
 
 .chat-messages {
-  height: 450px;
+  height: auto; /* Let it take the available space */
+  flex: 1; /* Make it fill available space */
   padding: 1.5rem;
   overflow-y: auto;
   background-color: var(--bg-cream);
@@ -497,6 +540,57 @@
 }
 
 /* Responsive adjustments */
+@media (max-width: 768px) {
+  .chat-container {
+    border-radius: 0;
+    margin: 0;
+    max-width: 100%;
+    height: 100%;
+  }
+  
+  .navbar {
+    padding: 0.75rem 1rem;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+  
+  .krishna-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .welcome-screen h1 {
+    font-size: 1.5rem;
+  }
+  
+  .chat-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .input-area {
+    padding: 0.75rem;
+  }
+  
+  .input-area input {
+    padding: 0.6rem;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+  }
+  
+  .chakra-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .welcome-screen {
+    padding: 2rem 1rem;
+  }
+}
+
 @media (max-width: 480px) {
   .navbar {
     padding: 0.75rem 1rem;
