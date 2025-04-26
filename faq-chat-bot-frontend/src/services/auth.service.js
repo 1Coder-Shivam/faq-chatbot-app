@@ -1,4 +1,4 @@
-import { DEFAULT_HEADERS } from '../constants/api.constants';
+import { DEFAULT_HEADERS, API_ENDPOINTS } from '../constants/api.constants';
 
 /**
  * Authentication service for handling user authentication
@@ -59,7 +59,7 @@ class AuthService {
     try {
       this.username = username; // Store username for token refresh
       
-      const response = await fetch('http://localhost:8080/api/auth/token', {
+      const response = await fetch(API_ENDPOINTS.AUTH_TOKEN, {
         method: 'POST',
         headers: DEFAULT_HEADERS,
         body: JSON.stringify({ username })

@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, HTTP_METHODS } from '../constants/api.constants';
+import { API_ENDPOINTS } from '../constants/api.constants';
 import BaseService from './base.service';
 
 /**
