@@ -20,8 +20,8 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-    // Expiration time in milliseconds (e.g., 24 hours)
-    private final long expiration = 86400000; 
+    @Value("${jwt.expiration}")
+    private Long expiration;
 
     public String extractUsername(String token) {
         return extractClaim(token, claims -> claims.get("username", String.class));

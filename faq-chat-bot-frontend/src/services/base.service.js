@@ -56,7 +56,7 @@ export default class BaseService {
    * @returns {Promise<any>} - The response data
    */
   async request(url, options = {}) {
-    const headers = this.addAuthHeader({
+    let headers = this.addAuthHeader({
       ...DEFAULT_HEADERS,
       ...options.headers
     });
@@ -69,11 +69,40 @@ export default class BaseService {
     try {
       const response = await fetch(url, config);
       
+      // Handle token expiration (401 Unauthorized)
+      if (response.status === 401 && authService.username) {
+        // Try to refresh the token
+        await authService.refreshToken();
+        
+        // Update headers with new token
+        headers = this.addAuthHeader({
+          ...DEFAULT_HEADERS,
+          ...options.headers
+        });
+        
+        // Retry the request with new token
+        const retryResponse = await fetch(url, {
+          ...config,
+          headers
+        });
+        
+        if (!retryResponse.ok) {
+          throw new Error(`Request failed with status ${retryResponse.status}`);
+        }
+        
+        // Parse and return the response
+        const contentType = retryResponse.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return await retryResponse.json();
+        }
+        return await retryResponse.text();
+      }
+      
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);
       }
       
-      // Handle empty responses
+      // Handle regular response
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         return await response.json();
