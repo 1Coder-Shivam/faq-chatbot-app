@@ -55,9 +55,27 @@ body {
 }
 
 .user-greeting {
-  font-weight: 500;
-  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
+
+.username-highlight {
+  font-size: 125%;
+  font-weight: 800;
+  color: #fff; /* White base for better contrast */
+  position: relative;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(to right, #ffd700, #ffb700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+  font-family: 'Righteous', cursive;
+}
+
 
 .welcome-screen {
   text-align: center;
