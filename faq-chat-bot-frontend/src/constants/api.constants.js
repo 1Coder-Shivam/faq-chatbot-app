@@ -2,7 +2,8 @@
  * API related constants
  */
 export const API_ENDPOINTS = {
-  ASK: '/api/ask'
+  ASK: '/api/ask',
+  AUTH_TOKEN: '/api/auth/token'
 };
 
 /**

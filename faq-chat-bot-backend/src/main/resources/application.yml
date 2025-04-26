@@ -19,3 +19,6 @@ logging:
     name: logs/qa-log.log
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+jwt:
+  secret: <YOUR-SECRETE-KEY>

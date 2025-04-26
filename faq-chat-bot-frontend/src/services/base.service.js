@@ -1,4 +1,5 @@
 import { DEFAULT_HEADERS } from '../constants/api.constants';
+import authService from './auth.service';
 
 /**
  * Base service with common HTTP request methods
@@ -33,16 +34,32 @@ export default class BaseService {
   }
 
   /**
+   * Add authorization header with token if available
+   * @param {Object} headers - Existing headers object
+   * @returns {Object} - Headers with authorization
+   */
+  addAuthHeader(headers = {}) {
+    const token = authService.getToken();
+    
+    if (!token) return headers;
+    
+    return {
+      ...headers,
+      'Authorization': `Bearer ${token}`
+    };
+  }
+
+  /**
    * Make a general request
    * @param {string} url - The URL to request
    * @param {Object} options - Fetch options
    * @returns {Promise<any>} - The response data
    */
   async request(url, options = {}) {
-    const headers = {
+    const headers = this.addAuthHeader({
       ...DEFAULT_HEADERS,
       ...options.headers
-    };
+    });
 
     const config = {
       ...options,

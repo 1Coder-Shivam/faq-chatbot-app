@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import WelcomeScreen from './components/WelcomeScreen'
 import ChatInterface from './components/ChatInterface'
+import authService from './services/auth.service'
 import './App.css'
 
 /**
@@ -17,16 +18,32 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [lastFailedQuestion, setLastFailedQuestion] = useState('') // Track the last question that failed
   const [hasError, setHasError] = useState(false) // Track if there's an error state
+  const [authLoading, setAuthLoading] = useState(false)
+  const [authError, setAuthError] = useState(null)
 
   // Validate name (3-15 characters)
   useEffect(() => {
     setIsNameValid(inputName.length >= 3 && inputName.length <= 15)
   }, [inputName])
 
-  const handleStartChat = () => {
+  const handleStartChat = async () => {
     if (isNameValid) {
-      setUserName(inputName)
-      setChatStarted(true)
+      setAuthLoading(true)
+      setAuthError(null)
+      
+      try {
+        // Generate token for the user
+        await authService.generateToken(inputName)
+        
+        // Set the username and start the chat
+        setUserName(inputName)
+        setChatStarted(true)
+      } catch (error) {
+        console.error('Authentication error:', error)
+        setAuthError('Failed to authenticate. Please try again.')
+      } finally {
+        setAuthLoading(false)
+      }
     }
   }
 
@@ -53,6 +70,8 @@ function App() {
             isNameValid={isNameValid}
             handleStartChat={handleStartChat}
             handleNameKeyPress={handleNameKeyPress}
+            isLoading={authLoading}
+            error={authError}
           />
         ) : (
           // Chat Interface
