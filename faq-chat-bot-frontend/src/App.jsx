@@ -51,7 +51,9 @@ const SudarshanChakra = ({ size = "large" }) => (
 // Formatted message component for styling bot responses
 const FormattedMessage = ({ content }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const messageRef = useRef(null);
+  const timerRef = useRef(null);
 
   // Function to format text with markdown-like syntax
   const formatText = (text) => {
@@ -75,19 +77,74 @@ const FormattedMessage = ({ content }) => {
     return text.replace(/\*\*(.*?)\*\*/g, '$1');
   };
 
-  const handleCopy = () => {
+  useEffect(() => {
+    return () => {
+      // Clear any existing timers when component unmounts
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
+  const handleCopy = (e) => {
+    // Prevent event bubbling
+    e.stopPropagation();
+    
+    // If already processing a click, return
+    if (isClicked) return;
+    
+    // Set clicked state to prevent multiple rapid clicks
+    setIsClicked(true);
+    
     // Get plain text content with markdown removed
     const plainText = cleanMarkdown(content);
     
-    // Copy to clipboard
-    navigator.clipboard.writeText(plainText)
-      .then(() => {
+    // Use a more reliable clipboard method
+    const copyToClipboard = async (text) => {
+      try {
+        // Use the newer clipboard API when available
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } else {
+          // Fallback for older browsers
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          textArea.style.position = "fixed";  // Avoid scrolling to bottom
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            return successful;
+          } catch (err) {
+            console.error('Fallback: Unable to copy', err);
+            document.body.removeChild(textArea);
+            return false;
+          }
+        }
+      } catch (err) {
+        console.error('Could not copy text: ', err);
+        return false;
+      }
+    };
+    
+    copyToClipboard(plainText).then(success => {
+      if (success) {
         setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
-      })
-      .catch(err => {
-        console.error('Failed to copy text: ', err);
-      });
+        
+        // Reset copied state after 2 seconds
+        timerRef.current = setTimeout(() => {
+          setIsCopied(false);
+          setIsClicked(false);
+        }, 2000);
+      } else {
+        console.error('Copy operation failed');
+        setIsClicked(false);
+      }
+    });
   };
 
   return (
