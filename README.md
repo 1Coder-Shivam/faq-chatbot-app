@@ -13,7 +13,7 @@ https://github.com/user-attachments/assets/c9523ba2-8bea-43aa-b536-dc5fc6f81b9d
 - **User-Friendly Interface**: React frontend for easy and smooth interaction.
 - **Real-Time Interaction**: Quick responses to help users find answers efficiently.
 - **Security**: JWT authentication and replay attack prevention using AES-encrypted nonces.
-
+- **Multi-Language Support**: Expand the chatbot to support multiple languages for a broader user base.
 ---
 
 ## 📦 Tech Stack
