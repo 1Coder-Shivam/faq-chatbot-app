@@ -4,6 +4,7 @@ import com.bng.model.AskRequest;
 import com.bng.model.AskResponse;
 import com.bng.model.Faq;
 import com.bng.service.AskService;
+import com.bng.service.ChatLogService;
 import com.bng.service.OpenAiClient;
 import com.bng.util.CacheUtil;
 import com.bng.util.FaqLoader;
@@ -19,11 +20,13 @@ public class AskServiceImpl implements AskService {
     private final FaqLoader faqLoader;
     private final OpenAiClient openAiClient;
     private final CacheUtil cacheUtil;
+    private final ChatLogService chatLogService;
 
-    public AskServiceImpl(FaqLoader faqLoader, OpenAiClient openAiClient, CacheUtil cacheUtil) {
+    public AskServiceImpl(FaqLoader faqLoader, OpenAiClient openAiClient, CacheUtil cacheUtil, ChatLogService chatLogService) {
         this.faqLoader = faqLoader;
         this.openAiClient = openAiClient;
         this.cacheUtil = cacheUtil;
+        this.chatLogService = chatLogService;
     }
 
     @Override
@@ -37,6 +40,8 @@ public class AskServiceImpl implements AskService {
         String cachedAnswer = cacheUtil.get(cacheKey);
         if (cachedAnswer != null) {
             logger.info("Cache hit for user [{}] and question: {} cachedAnswer:{}", username, userQuestion, cachedAnswer);
+            // Log the cached Q&A
+            chatLogService.logChat(username, userQuestion, cachedAnswer);
             return new AskResponse(cachedAnswer);
         }
 
@@ -53,6 +58,9 @@ public class AskServiceImpl implements AskService {
 
         // Log the Q&A
         logger.info("User: {} | Question: {} | Answer: {}", username, userQuestion, aiResponse);
+        
+        // Save Q&A with timestamp
+        chatLogService.logChat(username, userQuestion, aiResponse);
 
         // Save in cache
         cacheUtil.put(cacheKey, aiResponse);
