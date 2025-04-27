@@ -67,7 +67,11 @@ npm run dev
 - **Request Limit:** 3 requests per minute (RPM)
 - **Daily Request Limit:** 200 requests per day (RPD)
 - **Daily Token Limit:** 200,000 tokens per day (TPD)
-- For full limits and pricing details, check [OpenAI Usage Limits](https://platform.openai.com/settings/organization/limits) and [OpenAI Pricing](https://openai.com/api/pricing/).
+- For full limits and pricing details, check 
+  <a href="https://platform.openai.com/settings/organization/limits" target="_blank" rel="noopener noreferrer">OpenAI Usage Limits</a> 
+  and 
+  <a href="https://openai.com/api/pricing/" target="_blank" rel="noopener noreferrer">OpenAI Pricing</a>.
+
 
 ### 🧠 Caching
 - **Caching:** Responses are cached per user and question. 
