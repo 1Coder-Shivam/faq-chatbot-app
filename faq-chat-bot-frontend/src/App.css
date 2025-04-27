@@ -76,9 +76,8 @@ body {
   background-clip: text;
   color: transparent;
   filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
-  font-family: 'Righteous', cursive;
+  font-family: "Righteous", cursive;
 }
-
 
 .welcome-screen {
   text-align: center;
@@ -339,7 +338,7 @@ body {
 }
 
 .tooltip:before {
-  content: '';
+  content: "";
   position: absolute;
   top: -5px;
   left: 50%;
@@ -399,7 +398,11 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-dark-red) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-red) 0%,
+    var(--primary-dark-red) 100%
+  );
   color: var(--text-light);
 }
 
@@ -421,7 +424,11 @@ body {
 }
 
 .navbar {
-  background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-dark-red) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-red) 0%,
+    var(--primary-dark-red) 100%
+  );
   color: var(--text-light);
   padding: 1rem 2rem;
   display: flex;
@@ -432,7 +439,11 @@ body {
 
 .chat-header {
   padding: 1.5rem;
-  background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-dark-red) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-red) 0%,
+    var(--primary-dark-red) 100%
+  );
   color: var(--text-light);
   text-align: center;
   position: relative;
@@ -497,7 +508,7 @@ body {
 }
 
 .bot-message::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -543,7 +554,8 @@ body {
     box-shadow: 0 0 0 2px rgba(198, 169, 78, 0.3);
   }
   50% {
-    box-shadow: 0 0 0 2px rgba(198, 169, 78, 0.5), 0 0 10px rgba(198, 169, 78, 0.4);
+    box-shadow: 0 0 0 2px rgba(198, 169, 78, 0.5),
+      0 0 10px rgba(198, 169, 78, 0.4);
   }
   100% {
     box-shadow: 0 0 0 2px rgba(198, 169, 78, 0.3);
@@ -786,45 +798,50 @@ body {
     max-width: 100%;
     height: 100%;
   }
-  
+
   .navbar {
     padding: 0.75rem 1rem;
   }
-  
+
   .logo {
     font-size: 1.2rem;
   }
-  
+
   .krishna-icon {
     width: 30px;
     height: 30px;
   }
-  
+
   .welcome-screen h1 {
     font-size: 1.5rem;
   }
-  
+
   .chat-header h2 {
     font-size: 1.2rem;
   }
-  
+
   .input-area {
     padding: 0.75rem;
   }
-  
+
   .input-area input {
     padding: 0.6rem;
   }
-  
+
   .btn {
     padding: 0.5rem 1rem;
   }
-  
+
   .chakra-container {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
   }
-  
+
+  .chakra-container-small {
+    width: 30px;
+    height: 30px;
+  }
+
   .welcome-screen {
     padding: 2rem 1rem;
   }
@@ -834,29 +851,38 @@ body {
   .navbar {
     padding: 0.75rem 1rem;
   }
-  
+
   .logo {
     font-size: 1.2rem;
   }
-  
+
   .krishna-icon {
     width: 30px;
     height: 30px;
   }
-  
+
   .welcome-screen h1 {
     font-size: 1.5rem;
   }
-  
+
   .chakra-container {
-    width: 120px;
-    height: 120px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .chakra-container-small {
+    width: 24px;
+    height: 24px;
   }
 }
 
 /* Start button styling */
 .btn-start {
-  background: linear-gradient(135deg, var(--krishna-blue) 0%, var(--krishna-dark-blue) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--krishna-blue) 0%,
+    var(--krishna-dark-blue) 100%
+  );
   color: white;
   border: none;
   padding: 0.85rem 1.5rem;
@@ -900,7 +926,11 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(to right, var(--primary-gold), var(--krishna-blue));
+  background: linear-gradient(
+    to right,
+    var(--primary-gold),
+    var(--krishna-blue)
+  );
   opacity: 0.8;
 }
 
