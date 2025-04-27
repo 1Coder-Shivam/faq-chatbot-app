@@ -59,6 +59,11 @@ public class JwtUtil {
     }
 
     public String generateToken(String username) {
+        // Validate username length
+        if (username == null || username.length() < 3 || username.length() > 15) {
+            throw new IllegalArgumentException("Username must be between 3 and 15 characters");
+        }
+        
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username); // Use the custom username claim
         return createToken(claims);
