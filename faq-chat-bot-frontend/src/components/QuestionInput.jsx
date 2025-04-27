@@ -15,16 +15,21 @@ const QuestionInput = ({
   handleQuestionSubmit,
   isLoading 
 }) => {
+  const remainingChars = 100 - question.length;
+  
   return (
     <form onSubmit={handleQuestionSubmit} className="input-area">
-      <input
-        type="text"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        placeholder="Ask Krishna..."
-        maxLength={100}
-        autoFocus
-      />
+      <div className="input-container">
+        <input
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          placeholder="Ask Krishna..."
+          maxLength={100}
+          autoFocus
+        />
+        <span className="char-counter">{remainingChars}</span>
+      </div>
       <button type="submit" className="btn btn-primary" disabled={isLoading}>Send</button>
     </form>
   );
