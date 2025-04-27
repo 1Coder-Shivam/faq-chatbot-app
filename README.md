@@ -56,11 +56,22 @@ npm run dev
 
 ## 🤖 AI API Usage Details
 
-- The backend **always** uses the **OpenAI API** to generate answers for user questions.
+- The backend **always** uses the **OpenAI API (GPT-4o-mini model)** to generate answers for user questions.
+- Responses are limited to a **maximum of 500 tokens** per request to control usage and cost.
 - If the same user asks the same question again, the backend returns a **cached response** (in-memory) instead of making a new API call, reducing cost and latency.
 - You must provide your own `OPENAI_API_KEY` as an environment variable for the backend.
-- **API Cost:** Each unique (user, question) pair results in a call to OpenAI's API, which may incur costs based on your OpenAI plan and usage. See [OpenAI Pricing](https://openai.com/pricing) for details.
-- **Caching:** Responses are cached per user and question. The cache is in-memory and will be cleared if the server restarts.
+
+### 📈 GPT-4o Mini Model Details
+- **Model:** `gpt-4o-mini`
+- **Token Limit:** 60,000 tokens per minute (TPM)
+- **Request Limit:** 3 requests per minute (RPM)
+- **Daily Request Limit:** 200 requests per day (RPD)
+- **Daily Token Limit:** 200,000 tokens per day (TPD)
+- For full limits and pricing details, check [OpenAI Usage Limits](https://platform.openai.com/settings/organization/limits) and [OpenAI Pricing](https://openai.com/api/pricing/).
+
+### 🧠 Caching
+- **Caching:** Responses are cached per user and question. 
+- The cache is **in-memory** and will be **cleared if the server restarts**.
 
 ---
 
