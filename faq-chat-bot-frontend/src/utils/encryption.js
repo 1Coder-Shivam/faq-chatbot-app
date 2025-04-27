@@ -5,12 +5,10 @@ class EncryptionUtil {
   constructor() {
     // Get encryption key from environment variables
     this.escapedKey = import.meta.env.VITE_AES_ENCRYPTION_KEY;
-    console.log(this.escapedKey);
     // Fallback for development if not set
     if (this.escapedKey) {
       // Unescape to get the original key with special characters
       this.encryptionKey = decodeURIComponent(this.escapedKey);
-      console.log("Using key from environment:", this.encryptionKey);
     } else {
       console.warn("Encryption key not found in environment variables!");
     }
