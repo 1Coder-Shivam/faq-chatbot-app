@@ -816,7 +816,7 @@ h1, h2, .chat-header h2, .welcome-screen h1 {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .app {
+  .chat-container {
     position: static;
     overflow: auto;
     min-height: 100vh;
@@ -880,7 +880,7 @@ h1, h2, .chat-header h2, .welcome-screen h1 {
 }
 
 @media (max-width: 480px) {
-  .app {
+  .chat-container {
     position: static;
     overflow: auto;
     height: auto;
