@@ -8,12 +8,12 @@ spring:
 # Nonce encryption
 nonce:
   encryption:
-    key: <YOUR_NONCE_ENCRYPTION_KEY>
+    key: ${NONCE_ENCRYPTION_KEY:<NONCE-ENCRYPTION-KEY>}
 
 openai:
   api:
-    url: https://api.openai.com/v1/chat/completions
-    key: <Your API Key>
+    url: ${OPENAI_API_URL:https://api.openai.com/v1/chat/completions}
+    key:  ${OPENAI_API_KEY:<YOUR-KEY>}
   model: gpt-4o-mini
 
 logging:
@@ -26,5 +26,5 @@ logging:
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
 jwt:
-  secret: <YOUR-SECRETE-KEY>
-  expiration: 300000 # 5 minutes in milliseconds
+  secret: ${JWT_SECRET:<JWT-SECRET>}  # Secret key for JWT signing
+  expiration:  ${JWT_EXPIRATION:300000}  # 5 minutes in milliseconds
