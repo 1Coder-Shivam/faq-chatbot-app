@@ -33,7 +33,6 @@ public class JwtUtil {
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
-        System.out.println("Claims: " + claims);
         return claimsResolver.apply(claims);
     }
 

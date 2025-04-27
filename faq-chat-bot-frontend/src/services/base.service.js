@@ -1,5 +1,6 @@
 import { DEFAULT_HEADERS } from '../constants/api.constants';
 import authService from './auth.service';
+import encryptionUtil from '../utils/encryption';
 
 /**
  * Base service with common HTTP request methods
@@ -50,16 +51,35 @@ export default class BaseService {
   }
 
   /**
+   * Add security headers (X-Nonce and X-Timestamp)
+   * @param {Object} headers - Existing headers object
+   * @returns {Promise<Object>} - Headers with security additions
+   */
+  async addSecurityHeaders(headers = {}) {
+    const { nonce, timestamp } = await encryptionUtil.generateSecurityHeaders();
+    
+    return {
+      ...headers,
+      'X-Nonce': nonce,
+      'X-Timestamp': timestamp
+    };
+  }
+
+  /**
    * Make a general request
    * @param {string} url - The URL to request
    * @param {Object} options - Fetch options
    * @returns {Promise<any>} - The response data
    */
   async request(url, options = {}) {
+    // Add auth header
     let headers = this.addAuthHeader({
       ...DEFAULT_HEADERS,
       ...options.headers
     });
+    
+    // Add security headers
+    headers = await this.addSecurityHeaders(headers);
 
     const config = {
       ...options,
@@ -80,7 +100,10 @@ export default class BaseService {
           ...options.headers
         });
         
-        // Retry the request with new token
+        // Add fresh security headers for retry
+        headers = await this.addSecurityHeaders(headers);
+        
+        // Retry the request with new token and security headers
         const retryResponse = await fetch(url, {
           ...config,
           headers
