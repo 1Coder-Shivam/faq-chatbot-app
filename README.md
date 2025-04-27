@@ -27,7 +27,7 @@ A full-stack FAQ Chatbot application powered by a Spring Boot backend and React 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/faq-chatbot-app.git
+git clone https://github.com/1Coder-Shivam/faq-chatbot-app.git
 cd faq-chatbot-app
 ```
 
@@ -51,6 +51,27 @@ cd faq-chat-bot-frontend
 npm install
 npm run dev
 ```
+
+---
+
+## 🤖 AI API Usage Details
+
+- The backend **always** uses the **OpenAI API** to generate answers for user questions.
+- If the same user asks the same question again, the backend returns a **cached response** (in-memory) instead of making a new API call, reducing cost and latency.
+- You must provide your own `OPENAI_API_KEY` as an environment variable for the backend.
+- **API Cost:** Each unique (user, question) pair results in a call to OpenAI's API, which may incur costs based on your OpenAI plan and usage. See [OpenAI Pricing](https://openai.com/pricing) for details.
+- **Caching:** Responses are cached per user and question. The cache is in-memory and will be cleared if the server restarts.
+
+---
+
+## 💡 Design Thoughts & Assumptions
+
+- **Stateless (except cache):** The application does **not** store any user data or chat history beyond the in-memory cache for (user, question) pairs.
+- **Usernames:** Usernames are not unique or persisted. The same username can be used by multiple users or sessions.
+- **No Persistence:** No chats, questions, or answers are saved on the server or client beyond the current in-memory cache.
+- **Security:** Security is focused on transport (JWT, nonce, HTTPS if deployed), not on data privacy or long-term storage.
+- **API Model Usage:** OpenAI API is used for every question, but repeated questions from the same user are served from cache to control cost.
+- **Intended Use:** This design is suitable for demo, educational, or low-security environments. For production or sensitive use, consider additional security and privacy measures.
 
 ---
 
