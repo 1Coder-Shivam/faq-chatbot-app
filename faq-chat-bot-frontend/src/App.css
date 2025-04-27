@@ -816,54 +816,62 @@ h1, h2, .chat-header h2, .welcome-screen h1 {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    z-index: 1000;
-  }
   .app {
     position: static;
     overflow: auto;
     min-height: 100vh;
     height: auto;
-    padding-top: 64px; /* Match your navbar height */
   }
+
   .chat-container {
     border-radius: 0;
     margin: 0;
   }
+
+  .navbar {
+    padding: 0.75rem 1rem;
+  }
+
   .logo {
     font-size: 1.2rem;
   }
+
   .krishna-icon {
     width: 30px;
     height: 30px;
   }
+
+
   .welcome-screen h1 {
     font-size: 1.5rem;
   }
+
   .chat-header h2 {
     font-size: 1.2rem;
   }
+
   .input-area {
     padding: 0.75rem;
   }
+
   .input-area input {
     padding: 0.6rem;
   }
+
   .btn {
     padding: 0.5rem 1rem;
   }
+
   .chakra-container {
     width: 90px;
     height: 90px;
   }
+
   .chakra-container-small {
     width: 30px;
     height: 30px;
   }
+
   .welcome-screen {
     padding: 2rem 1rem;
   }
@@ -875,23 +883,29 @@ h1, h2, .chat-header h2, .welcome-screen h1 {
     overflow: auto;
     height: auto;
   }
+
   .navbar {
     padding: 0.75rem 1rem;
   }
+
   .logo {
     font-size: 1.2rem;
   }
+
   .krishna-icon {
     width: 30px;
     height: 30px;
   }
+
   .welcome-screen h1 {
     font-size: 1.5rem;
   }
+
   .chakra-container {
     width: 60px;
     height: 60px;
   }
+
   .chakra-container-small {
     width: 24px;
     height: 24px;
