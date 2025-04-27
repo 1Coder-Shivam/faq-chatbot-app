@@ -962,3 +962,12 @@ body {
   min-width: 2rem;
   text-align: center;
 }
+
+.input-guidance {
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  opacity: 0.75;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-style: italic;
+}

@@ -60,15 +60,45 @@ public class ChatLogServiceImpl implements ChatLogService {
         String filename = LOG_FILE_PREFIX + today + ".json";
         File logFile = new File(LOG_DIR, filename);
         
-        try (FileWriter writer = new FileWriter(logFile, true)) {
-            // Add a newline if the file is not empty and doesn't end with a newline
+        try {
+            // Read existing logs or create new array
+            String jsonContent;
             if (logFile.exists() && logFile.length() > 0) {
-                writer.write("\n");
+                jsonContent = Files.readString(logFile.toPath());
+                
+                // Handle malformed JSON case - if it ends with ],
+                if (jsonContent.endsWith("],")) {
+                    jsonContent = jsonContent.substring(0, jsonContent.length() - 1);
+                }
+                
+                // If the file doesn't start with [ or doesn't end with ], adjust it
+                if (!jsonContent.startsWith("[")) {
+                    jsonContent = "[" + jsonContent;
+                }
+                if (!jsonContent.endsWith("]")) {
+                    // If it ends with comma, keep it, otherwise add one
+                    if (!jsonContent.endsWith(",")) {
+                        jsonContent += ",";
+                    }
+                } else {
+                    // If it ends with ], remove the ] to add more entries
+                    jsonContent = jsonContent.substring(0, jsonContent.length() - 1);
+                    if (!jsonContent.endsWith(",")) {
+                        jsonContent += ",";
+                    }
+                }
+                
+                // Append the new entry and close the array
+                jsonContent += gson.toJson(chatLog) + "]";
+            } else {
+                // New file, create a fresh JSON array with one entry
+                jsonContent = "[" + gson.toJson(chatLog) + "]";
             }
             
-            // Write the log entry as JSON
-            writer.write(gson.toJson(chatLog));
+            // Write the complete updated JSON back to file
+            Files.writeString(logFile.toPath(), jsonContent);
             logger.info("Logged chat for user [{}] to file: {}", chatLog.getUsername(), logFile.getAbsolutePath());
+            
         } catch (IOException e) {
             logger.error("Failed to log chat to file", e);
         }

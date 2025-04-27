@@ -24,7 +24,7 @@ const QuestionInput = ({
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Ask Krishna..."
+          placeholder="Ask Krishna about life, dharma, or spirituality..."
           maxLength={100}
           autoFocus
         />
