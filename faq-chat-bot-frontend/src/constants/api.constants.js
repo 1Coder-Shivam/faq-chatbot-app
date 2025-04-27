@@ -2,8 +2,8 @@
  * API related constants
  */
 export const API_ENDPOINTS = {
-  ASK: '/api/ask',
-  AUTH_TOKEN: '/api/auth/token'
+  ASK: 'https://faq-chatbot-app-backend.onrender.com/api/ask',
+  AUTH_TOKEN: 'https://faq-chatbot-app-backend.onrender.com/api/auth/token'
 };
 
 /**
