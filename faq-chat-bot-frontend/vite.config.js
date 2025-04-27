@@ -14,5 +14,10 @@ export default defineConfig({
         secure: false
       }
     }
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 5173,
+    allowedHosts: ['faq-chatbot-app.onrender.com']
   }
 })
