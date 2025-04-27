@@ -2,7 +2,8 @@
 
 A full-stack FAQ Chatbot application powered by a Spring Boot backend and React frontend, delivering intelligent answers inspired by the Bhagavad Gita.
 
-https://github.com/user-attachments/assets/36adbd8f-8691-467c-ae71-3644f5439843
+https://github.com/user-attachments/assets/c9523ba2-8bea-43aa-b536-dc5fc6f81b9d
+
 
 ---
 
