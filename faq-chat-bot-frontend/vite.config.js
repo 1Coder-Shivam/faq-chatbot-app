@@ -18,12 +18,5 @@ export default defineConfig({
     host: '0.0.0.0', // ✅ allow external traffic
     port: parseInt(process.env.PORT) || 4173, // ✅ dynamic port
     allowedHosts: ['faq-chatbot-app.onrender.com'],
-    proxy: {
-      '/api': {
-        target: "https://faq-chatbot-app-backend.onrender.com",
-        changeOrigin: true,
-        secure: false
-      }
-    }
   }
 })
