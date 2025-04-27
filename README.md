@@ -162,6 +162,11 @@ const generateEncryptedNonce = () => {
 - Requests with expired or used nonces will be rejected
 
 ---
+## 🔮 Future Scopes
 
+1. **Authentication Enhancements**: Implement signup/sign-in or SSO (Single Sign-On) based authentication for improved security and user management.
+2. **Data Persistence**: Store user profiles and chat history in a database to preserve data across sessions and devices.
+3. **Chat Memory (Context Preservation)**: Enable the chatbot to remember previous conversations, allowing it to provide more context-aware and personalized responses.
+---
 ## 📄 License
 MIT
