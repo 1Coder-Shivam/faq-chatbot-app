@@ -27,7 +27,7 @@ A full-stack FAQ Chatbot application powered by a Spring Boot backend and React 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/faq-chatbot-app.git
+git clone https://github.com/1Coder-Shivam/faq-chatbot-app.git
 cd faq-chatbot-app
 ```
 
