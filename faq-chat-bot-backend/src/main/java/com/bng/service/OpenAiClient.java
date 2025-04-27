@@ -43,6 +43,7 @@ public class OpenAiClient {
                 Map.of("role", "user", "content", userQuestion)
         ));
         requestBody.put("temperature", 0.7);
+        requestBody.put("max_tokens", 500);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 

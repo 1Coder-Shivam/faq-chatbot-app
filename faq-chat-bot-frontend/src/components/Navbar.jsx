@@ -14,7 +14,7 @@ const Navbar = ({ userName }) => {
         <img src={krishnaIcon} alt="Krishna Icon" className="krishna-icon" />
         <span>Krishna FAQ Bot</span>
       </div>
-      <div className="user-greeting">Hey <span className="username-highlight">{userName}</span></div>
+      <div className="user-greeting">Jai Shri Krishna, <span className="username-highlight">{userName}</span></div>
     </nav>
   );
 };
