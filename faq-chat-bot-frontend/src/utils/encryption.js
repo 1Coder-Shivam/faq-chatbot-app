@@ -4,7 +4,7 @@
 class EncryptionUtil {
   constructor() {
     // Get encryption key from environment variables
-    this.escapedKey = import.meta.env.VITE_AES_ENCRYPTION_KEY;
+    this.escapedKey = process.env.VITE_AES_ENCRYPTION_KEY;
     // Fallback for development if not set
     if (this.escapedKey) {
       // Unescape to get the original key with special characters
