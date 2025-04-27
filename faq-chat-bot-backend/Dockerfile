@@ -1,5 +1,5 @@
-# Use OpenJDK 17 (or 21) image
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Use Maven + Java 21 image for building
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 # Set working directory
 WORKDIR /app
@@ -11,8 +11,8 @@ COPY src ./src
 # Build the application
 RUN mvn clean package -DskipTests
 
-# Use a smaller runtime image
-FROM openjdk:17-jdk-slim
+# Use Java 21 runtime image
+FROM openjdk:21-jdk-slim
 
 # Set working directory
 WORKDIR /app
@@ -20,8 +20,8 @@ WORKDIR /app
 # Copy the built jar from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose port (Render uses PORT env var, so we pass it to Spring Boot)
+# Expose port
 EXPOSE 8080
 
 # Command to run
-CMD ["java", "-jar", "app.jar"] 
+CMD ["java", "-jar", "app.jar"]
