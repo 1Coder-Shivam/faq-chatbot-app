@@ -164,7 +164,7 @@ const generateEncryptedNonce = () => {
 ## 🔮 Future Scopes
 
 1. **Authentication Enhancements**: Implement signup/sign-in or SSO (Single Sign-On) based authentication for improved security and user management.
-2. - **Multi-Language Support**: Expand the chatbot to support multiple languages for a broader user base.
+2. **Multi-Language Support**: Expand the chatbot to support multiple languages for a broader user base.
 3. **Data Persistence**: Store user profiles and chat history in a database to preserve data across sessions and devices.
 4. **Chat Memory (Context Preservation)**: Enable the chatbot to remember previous conversations, allowing it to provide more context-aware and personalized responses.
 ---
