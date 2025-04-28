@@ -81,6 +81,13 @@ npm run dev
 
 ---
 
+### 🔄 Error Handling and Retry
+
+- If there is a failure while getting a response from the backend (e.g., network issues, server errors, etc.), the frontend automatically displays an **error message** to the user.
+- A **"Regenerate Response"** button will also appear, allowing the user to retry fetching the response without retyping the question.
+  
+---
+
 ## 💡 Design Thoughts & Assumptions
 
 - **Stateless (except cache):** The application does **not** store any user data or chat history beyond the in-memory cache for (user, question) pairs.
