@@ -13,7 +13,6 @@ https://github.com/user-attachments/assets/c9523ba2-8bea-43aa-b536-dc5fc6f81b9d
 - **User-Friendly Interface**: React frontend for easy and smooth interaction.
 - **Real-Time Interaction**: Quick responses to help users find answers efficiently.
 - **Security**: JWT authentication and replay attack prevention using AES-encrypted nonces.
-- **Multi-Language Support**: Expand the chatbot to support multiple languages for a broader user base.
 ---
 
 ## 📦 Tech Stack
@@ -165,8 +164,9 @@ const generateEncryptedNonce = () => {
 ## 🔮 Future Scopes
 
 1. **Authentication Enhancements**: Implement signup/sign-in or SSO (Single Sign-On) based authentication for improved security and user management.
-2. **Data Persistence**: Store user profiles and chat history in a database to preserve data across sessions and devices.
-3. **Chat Memory (Context Preservation)**: Enable the chatbot to remember previous conversations, allowing it to provide more context-aware and personalized responses.
+2. - **Multi-Language Support**: Expand the chatbot to support multiple languages for a broader user base.
+3. **Data Persistence**: Store user profiles and chat history in a database to preserve data across sessions and devices.
+4. **Chat Memory (Context Preservation)**: Enable the chatbot to remember previous conversations, allowing it to provide more context-aware and personalized responses.
 ---
 ## 📄 License
 MIT
