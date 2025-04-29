@@ -1,3 +1,8 @@
+**Live Application:** [www.heyparth.online](https://www.heyparth.online)  
+*Note: This app is deployed using Render's free tier. It may take a few minutes to connect to the backend service after being idle.*
+
+---
+
 # FAQ Chatbot App
 
 A full-stack FAQ Chatbot application powered by a Spring Boot backend and React frontend, delivering intelligent answers inspired by the Bhagavad Gita.
